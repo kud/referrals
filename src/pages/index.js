@@ -1,3 +1,4 @@
+import React from "react"
 import Head from "next/head"
 import styled from "@emotion/styled"
 import { Global, css } from "@emotion/react"
@@ -54,22 +55,41 @@ Hero.Image = styled.img`
   display: block;
 `
 
-const Header = styled.header`
-  padding: 1rem 2rem;
+const HeaderSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2.5rem 0 2rem 0;
+  padding: 2.5rem 2rem 2rem 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.1s forwards;
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
 `
 
-Header.Heading = styled.h1`
-  font-size: 3rem;
-  font-weight: 400;
-  color: #bfbfbf;
+const HeaderTitle = styled.h1`
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #23272f;
+  margin-bottom: 1.2rem;
+  letter-spacing: -0.5px;
 `
 
-Header.Heading.Strong = styled.strong`
-  font-family: Monaco, "Andale Mono", "DejaVu Sans Mono", "Courier New", Courier,
-    monospace;
-  color: #332f;
-  font-size: 0.9em;
-  font-weight: 200;
+const HeaderText = styled.p`
+  color: #555;
+  font-size: 1.15rem;
+  margin: 0.5rem 0 0.5rem 0;
+  line-height: 1.7;
+  text-align: center;
 `
 
 const Main = styled.main`
@@ -78,45 +98,85 @@ const Main = styled.main`
   justify-content: center;
 `
 
-const Aside = styled.aside`
-  padding: 0 2rem;
-  margin-bottom: 2rem;
-  color: #737373;
-  line-height: 1.5;
-  font-style: italic;
-`
-
 const Item = styled.a`
   width: 100%;
-  max-width: 300px;
-  border-radius: 4px;
-  background-color: #fff;
-  margin: 1rem 2rem;
-  transition: box-shadow 300ms ease;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.04),
-    0 3px 1px -2px rgba(0, 0, 0, 0.04), 0 1px 5px 0 rgba(0, 0, 0, 0.04);
+  max-width: 320px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #fff 80%, #f0f4ff 100%);
+  margin: 1.5rem 2rem;
+  transition: box-shadow 300ms cubic-bezier(0.4, 2, 0.6, 1),
+    transform 200ms cubic-bezier(0.4, 2, 0.6, 1);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 24px 0 rgba(0, 0, 0, 0.08);
   text-decoration: none;
-  color: #404040;
+  color: #222;
+  border: 1.5px solid #e6e6e6;
+  position: relative;
+  overflow: hidden;
 
   &:hover {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 32px rgba(80, 80, 80, 0.13),
+      0 2px 8px rgba(0, 0, 0, 0.06);
+    transform: translateY(-4px) scale(1.025);
+    border-color: #bdbdbd;
     cursor: pointer;
+    background: linear-gradient(135deg, #f7f7f7 80%, #eaeaea 100%);
   }
 `
 
 Item.Code = styled.span`
-  color: #737373;
-  padding: 2rem 2rem;
+  color: #2d3a4a;
+  background: #f6f8fa;
+  border-radius: 4px 4px 0 0;
+  padding: 1.5rem 2rem 1rem 2rem;
   display: block;
+  font-family: "Fira Mono", "Monaco", "Consolas", monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  border-bottom: 1px solid #e6e6e6;
+  min-height: 48px;
 `
 
 Item.Heading = styled.span`
-  padding: 1rem 2rem;
+  padding: 1.2rem 2rem 1.2rem 2rem;
   margin: 0;
-  background-color: #fbfbfb;
-  font-weight: 400;
+  background: #fafdff;
+  font-weight: 600;
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
+  color: #2d3a4a;
+  border-radius: 0 0 4px 4px;
+  letter-spacing: 0.01em;
+`
+
+const SpinnerOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+`
+
+const Spinner = styled.div`
+  border: 3px solid #e6e6e6;
+  border-top: 3px solid #bdbdbd;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `
 
 export const getStaticProps = async () => {
@@ -159,10 +219,27 @@ export const getStaticProps = async () => {
 }
 
 const IndexPage = ({ items, meta }) => {
-  const handleClick = async ({ name, code }) => {
-    await navigator.clipboard.writeText(code)
+  const [loadingIndex, setLoadingIndex] = React.useState(null)
+  const [countdown, setCountdown] = React.useState(0)
 
+  const handleClick = async ({ name, code, url }, event, idx) => {
+    event.preventDefault()
+    await navigator.clipboard.writeText(code)
     toast.success(`Code for ${name} copied to clipboard! 🎉`)
+    setLoadingIndex(idx)
+    setCountdown(3)
+    let seconds = 3
+    const interval = setInterval(() => {
+      seconds -= 1
+      setCountdown(seconds)
+      if (seconds === 0) {
+        clearInterval(interval)
+      }
+    }, 1000)
+    setTimeout(() => {
+      setLoadingIndex(null)
+      window.open(url, "_blank")
+    }, 3000)
   }
 
   return (
@@ -209,37 +286,44 @@ const IndexPage = ({ items, meta }) => {
           <Hero.Image src="/hero.jpg" alt="Sponsorships Hero" />
         </Hero>
 
-        <Header>
-          <Header.Heading>
-            Get <Header.Heading.Strong>sponsorships</Header.Heading.Strong>
-          </Header.Heading>
-        </Header>
-
-        <Aside>
-          <p>
-            {`Hello and welcome to my sponsorship page. Each box represents a
-            sponsorship.`}
-          </p>
-          <p>
-            {`Just note that when you click on one, it'll open a new tab and -
-            depending on the sponsorship - will also copy the code in the
-            clipboard. Enjoy! 🙌`}
-          </p>
-        </Aside>
+        <HeaderSection>
+          <HeaderTitle>Get sponsorships</HeaderTitle>
+          <HeaderText>
+            Hello and welcome to my sponsorship page. Each box represents a
+            sponsorship.
+          </HeaderText>
+          <HeaderText>
+            Just note that when you click on one, it'll open a new tab and –
+            depending on the sponsorship – will also copy the code in the
+            clipboard. Enjoy! 🙌
+          </HeaderText>
+        </HeaderSection>
 
         <Main>
-          {items.map(({ name, code, url }) => (
+          {items.map(({ name, code, url }, idx) => (
             <Item
               key={name}
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => {
-                handleClick({ name, code })
-              }}
+              onClick={(e) => handleClick({ name, code, url }, e, idx)}
             >
+              {loadingIndex === idx && (
+                <SpinnerOverlay>
+                  <Spinner />
+                  <span
+                    style={{
+                      marginLeft: 12,
+                      fontWeight: 500,
+                      color: "#888",
+                      fontSize: "1.1rem",
+                    }}
+                  >
+                    Opening in {countdown}s…
+                  </span>
+                </SpinnerOverlay>
+              )}
               <Item.Code>{code ? code : "Direct link 🔗"}</Item.Code>
-
               <Item.Heading>{name}</Item.Heading>
             </Item>
           ))}
