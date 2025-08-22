@@ -181,12 +181,12 @@ const Spinner = styled.div`
 
 export const getStaticProps = async () => {
   const meta = {
-    url: "https://sponsorships.kud.io/",
-    title: "Get Sponsorships | _kud",
+    url: "https://referrals.kud.io/",
+    title: "Get Referrals | _kud",
     description: "Get some vouchers for different platforms.",
-    preview: "https://sponsorships.kud.io/preview.jpg",
+    preview: "https://referrals.kud.io/preview.jpg",
     keywords:
-      "sponsorships, discount, price, code, promo, voucher, vouchers, sponsorship, price, groslot, reduction, prix, partnership, offer, savings, coupon, deal, special, discount code, promotional offer, cashback, loyalty, rewards, clearance, sale, limited time, exclusive, online shopping, e-commerce, savings, budget-friendly, affordable, bargain, markdown, price drop, special offer, promotional code, discount voucher",
+      "referrals, discount, price, code, promo, voucher, vouchers, referral, price, groslot, reduction, prix, partnership, offer, savings, coupon, deal, special, discount code, promotional offer, cashback, loyalty, rewards, clearance, sale, limited time, exclusive, online shopping, e-commerce, savings, budget-friendly, affordable, bargain, markdown, price drop, special offer, promotional code, discount voucher",
   }
 
   const database = await notion.databases.query({
@@ -283,18 +283,18 @@ const IndexPage = ({ items, meta }) => {
 
       <Root>
         <Hero>
-          <Hero.Image src="/hero.jpg" alt="Sponsorships Hero" />
+          <Hero.Image src="/hero.jpg" alt="Referrals Hero" />
         </Hero>
 
         <HeaderSection>
-          <HeaderTitle>Get sponsorships</HeaderTitle>
+          <HeaderTitle>Get referrals</HeaderTitle>
           <HeaderText>
-            Hello and welcome to my sponsorship page. Each box represents a
-            sponsorship.
+            Hello and welcome to my referral page. Each box represents a
+            referral.
           </HeaderText>
           <HeaderText>
             Just note that when you click on one, it'll open a new tab and –
-            depending on the sponsorship – will also copy the code in the
+            depending on the referral – will also copy the code in the
             clipboard. Enjoy! 🙌
           </HeaderText>
         </HeaderSection>
