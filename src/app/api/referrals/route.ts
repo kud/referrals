@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
-import { Client } from '@notionhq/client'
+import { NextResponse } from "next/server"
+import { Client } from "@notionhq/client"
 
 const NOTION_API_KEY = process.env.NOTION_API_KEY
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID
@@ -24,10 +24,10 @@ interface NotionPage {
 
 export async function GET() {
   if (!NOTION_API_KEY || !NOTION_DATABASE_ID) {
-    console.error('Missing Notion API key or database ID')
+    console.error("Missing Notion API key or database ID")
     return NextResponse.json(
-      { error: 'Server configuration error' },
-      { status: 500 }
+      { error: "Server configuration error" },
+      { status: 500 },
     )
   }
 
@@ -39,12 +39,12 @@ export async function GET() {
 
     const rawPages = database.results
     const pagePromises = rawPages.map(async ({ id }) => {
-      const page = await notion.pages.retrieve({ page_id: id }) as NotionPage
-      
+      const page = (await notion.pages.retrieve({ page_id: id })) as NotionPage
+
       return {
         name: page.properties.name?.title?.[0]?.plain_text || null,
         code: page.properties.code?.rich_text?.[0]?.plain_text || null,
-        url: page.properties.url?.url || null,
+        url: page.properties.url?.rich_text?.[0]?.plain_text || null,
         type: page.properties.type?.select?.name || null,
       }
     })
@@ -52,10 +52,10 @@ export async function GET() {
     const items: ReferralItem[] = await Promise.all(pagePromises)
     return NextResponse.json({ items })
   } catch (error) {
-    console.error('Error fetching data:', error)
+    console.error("Error fetching data:", error)
     return NextResponse.json(
-      { error: 'Failed to fetch referrals' },
-      { status: 500 }
+      { error: "Failed to fetch referrals" },
+      { status: 500 },
     )
   }
 }

@@ -175,4 +175,17 @@
     z-index: 10;
     animation: floatMoney 6s ease-in-out infinite;
   }
+  
+  @keyframes gentleFade {
+    0%, 100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  
+  .animate-gentle-fade {
+    animation: gentleFade 4s ease-in-out infinite;
+  }
 }
