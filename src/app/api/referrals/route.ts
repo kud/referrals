@@ -11,6 +11,17 @@ interface ReferralItem {
   type: string | null
 }
 
+interface NotionProperty {
+  title?: Array<{ plain_text?: string }>
+  rich_text?: Array<{ plain_text?: string }>
+  url?: string
+  select?: { name?: string }
+}
+
+interface NotionPage {
+  properties: Record<string, NotionProperty>
+}
+
 export async function GET() {
   if (!NOTION_API_KEY || !NOTION_DATABASE_ID) {
     console.error('Missing Notion API key or database ID')
@@ -28,13 +39,13 @@ export async function GET() {
 
     const rawPages = database.results
     const pagePromises = rawPages.map(async ({ id }) => {
-      const page = await notion.pages.retrieve({ page_id: id })
+      const page = await notion.pages.retrieve({ page_id: id }) as NotionPage
       
       return {
-        name: (page.properties as any).name?.title?.[0]?.plain_text || null,
-        code: (page.properties as any).code?.rich_text?.[0]?.plain_text || null,
-        url: (page.properties as any).url?.url || null,
-        type: (page.properties as any).type?.select?.name || null,
+        name: page.properties.name?.title?.[0]?.plain_text || null,
+        code: page.properties.code?.rich_text?.[0]?.plain_text || null,
+        url: page.properties.url?.url || null,
+        type: page.properties.type?.select?.name || null,
       }
     })
 
