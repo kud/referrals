@@ -13,140 +13,137 @@ const notion = new Client({ auth: NOTION_API_KEY })
 const globalStyles = css`
   html,
   body {
-    font-family: Helvetica, Arial, sans-serif;
-    background-color: #f2f2f2;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    background-color: #000;
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #404040;
+    color: #a1a1aa;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background-color: #27272a;
+    color: #fff;
   }
 `
 
 const Root = styled.div`
-  padding: 0 4rem;
-  max-width: 1280px;
-  margin: auto;
+  min-height: 100vh;
+  padding: 0 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  @media (min-width: 768px) {
+    padding: 0 2rem;
+  }
 `
 
 const Hero = styled.div`
-  width: 100vw;
-  max-width: 100vw;
-  margin: 2rem 0 0 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  border-radius: 0;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  background: #fff;
-  min-height: 220px;
-  max-height: 300px;
-  height: 300px;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-`
-
-Hero.Image = styled.img`
-  width: 100%;
-  height: 100%;
-  max-height: 300px;
-  object-fit: cover;
-  display: block;
+  margin: 3rem 0 2rem 0;
+  padding: 0;
+  background: transparent;
+  
+  @media (min-width: 768px) {
+    margin: 4rem 0 3rem 0;
+  }
 `
 
 const HeaderSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 2.5rem 0 2rem 0;
-  padding: 2.5rem 2rem 2rem 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
-  max-width: 700px;
+  margin: 0 0 4rem 0;
+  padding: 0;
+  background: transparent;
+  max-width: 640px;
   margin-left: auto;
   margin-right: auto;
-  opacity: 0;
-  animation: fadeIn 0.8s ease 0.1s forwards;
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
-    }
-  }
-`
-
-const HeaderTitle = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #23272f;
-  margin-bottom: 1.2rem;
-  letter-spacing: -0.5px;
-`
-
-const HeaderText = styled.p`
-  color: #555;
-  font-size: 1.15rem;
-  margin: 0.5rem 0 0.5rem 0;
-  line-height: 1.7;
   text-align: center;
 `
 
+const HeaderTitle = styled.h1`
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+`
+
+const HeaderText = styled.p`
+  color: #71717a;
+  font-size: 1.125rem;
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 560px;
+`
+
 const Main = styled.main`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  
+  @media (min-width: 768px) {
+    gap: 2rem;
+  }
 `
 
 const Item = styled.a`
-  width: 100%;
-  max-width: 320px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #fff 80%, #f0f4ff 100%);
-  margin: 1.5rem 2rem;
-  transition: box-shadow 300ms cubic-bezier(0.4, 2, 0.6, 1),
-    transform 200ms cubic-bezier(0.4, 2, 0.6, 1);
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 24px 0 rgba(0, 0, 0, 0.08);
+  display: block;
+  background: #111111;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  padding: 0;
   text-decoration: none;
-  color: #222;
-  border: 1.5px solid #e6e6e6;
+  color: inherit;
   position: relative;
   overflow: hidden;
+  transition: all 0.2s ease;
 
   &:hover {
-    box-shadow: 0 12px 32px rgba(80, 80, 80, 0.13),
-      0 2px 8px rgba(0, 0, 0, 0.06);
-    transform: translateY(-4px) scale(1.025);
-    border-color: #bdbdbd;
-    cursor: pointer;
-    background: linear-gradient(135deg, #f7f7f7 80%, #eaeaea 100%);
+    border-color: #3f3f46;
+    background: #161616;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `
 
 Item.Code = styled.span`
-  color: #2d3a4a;
-  background: #f6f8fa;
-  border-radius: 4px 4px 0 0;
-  padding: 1.5rem 2rem 1rem 2rem;
   display: block;
-  font-family: "Fira Mono", "Monaco", "Consolas", monospace;
-  font-size: 1.1rem;
-  letter-spacing: 0.02em;
-  font-weight: 500;
-  border-bottom: 1px solid #e6e6e6;
-  min-height: 48px;
+  padding: 1.5rem;
+  background: #0a0a0a;
+  color: #71717a;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid #27272a;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
 `
 
 Item.Heading = styled.span`
-  padding: 1.2rem 2rem 1.2rem 2rem;
-  margin: 0;
-  background: #fafdff;
-  font-weight: 600;
   display: block;
-  font-size: 1.35rem;
-  color: #2d3a4a;
-  border-radius: 0 0 4px 4px;
-  letter-spacing: 0.01em;
+  padding: 1.5rem;
+  background: transparent;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
 `
 
 const SpinnerOverlay = styled.div`
@@ -155,19 +152,21 @@ const SpinnerOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
+  border-radius: 8px;
 `
 
 const Spinner = styled.div`
-  border: 3px solid #e6e6e6;
-  border-top: 3px solid #bdbdbd;
+  border: 2px solid #27272a;
+  border-top: 2px solid #71717a;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   animation: spin 1s linear infinite;
   @keyframes spin {
     0% {
@@ -282,20 +281,15 @@ const IndexPage = ({ items, meta }) => {
       </Head>
 
       <Root>
-        <Hero>
-          <Hero.Image src="/hero.jpg" alt="Referrals Hero" />
-        </Hero>
+        <Hero />
 
         <HeaderSection>
-          <HeaderTitle>Get referrals</HeaderTitle>
+          <HeaderTitle>referrals</HeaderTitle>
           <HeaderText>
-            Hello and welcome to my referral page. Each box represents a
-            referral.
+            Exclusive codes and referral links for various platforms and services.
           </HeaderText>
           <HeaderText>
-            Just note that when you click on one, it'll open a new tab and –
-            depending on the referral – will also copy the code in the
-            clipboard. Enjoy! 🙌
+            Click any card to copy the code and open the referral link.
           </HeaderText>
         </HeaderSection>
 
@@ -314,9 +308,10 @@ const IndexPage = ({ items, meta }) => {
                   <span
                     style={{
                       marginLeft: 12,
-                      fontWeight: 500,
-                      color: "#888",
-                      fontSize: "1.1rem",
+                      fontWeight: 400,
+                      color: "#a1a1aa",
+                      fontSize: "0.875rem",
+                      fontFamily: "'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace",
                     }}
                   >
                     Opening in {countdown}s…
