@@ -8,5 +8,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1,
     },
+    {
+      url: 'https://referrals.kud.io/api/referrals',
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.5,
+    },
   ]
 }

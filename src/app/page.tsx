@@ -112,8 +112,43 @@ export default function HomePage() {
     )
   }
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Cash Back Referrals",
+    "description": "Premium referral codes that pay you back. Get cashback on finance, tech, travel, food, and more.",
+    "url": "https://referrals.kud.io",
+    "sameAs": [
+      "https://github.com/kud",
+      "https://twitter.com/_kud"
+    ],
+    "offers": {
+      "@type": "AggregateOffer",
+      "offerCount": items.length,
+      "offers": items.map(item => ({
+        "@type": "Offer",
+        "name": item.name,
+        "description": `Get cashback with ${item.name} referral code`,
+        "category": item.type,
+        "url": item.url,
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }))
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-black text-gray-300">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
+      <div className="min-h-screen bg-black text-gray-300">
       {/* Floating Money Animation */}
       <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
         {[...Array(6)].map((_, i) => (
@@ -437,5 +472,6 @@ export default function HomePage() {
         />
       </div>
     </div>
+    </>
   )
 }
