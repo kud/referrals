@@ -1,7 +1,17 @@
 {
   "name": "referrals",
   "version": "2.1.2",
+  "description": "Premium referral codes platform with animated money-themed UI",
   "private": true,
+  "keywords": [
+    "referrals",
+    "cashback",
+    "discount-codes",
+    "vouchers",
+    "deals",
+    "savings",
+    "money"
+  ],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",

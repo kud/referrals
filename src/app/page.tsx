@@ -48,10 +48,17 @@ export default function HomePage() {
     return ['all', ...types]
   }, [items])
 
-  // Filter items by selected type
-  const filteredItems = useMemo(() => {
-    const filtered = selectedType === 'all' ? items : items.filter(item => item.type === selectedType)
-    return filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+  // Sort items - active first, then disabled, both alphabetically within groups
+  const sortedItems = useMemo(() => {
+    const sorted = items.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+    
+    if (selectedType === 'all') return sorted
+    
+    // Separate active and disabled items
+    const activeItems = sorted.filter(item => item.type === selectedType)
+    const disabledItems = sorted.filter(item => item.type !== selectedType)
+    
+    return [...activeItems, ...disabledItems]
   }, [items, selectedType])
 
   // Get display text for selected type
@@ -69,21 +76,20 @@ export default function HomePage() {
     
     setLoadingIndex(idx)
     setCountdown(3)
+    
     let seconds = 3
     const interval = setInterval(() => {
       seconds -= 1
       setCountdown(seconds)
+      
       if (seconds === 0) {
         clearInterval(interval)
+        setLoadingIndex(null)
+        if (item.url) {
+          window.open(item.url, '_blank')
+        }
       }
     }, 1000)
-    
-    setTimeout(() => {
-      setLoadingIndex(null)
-      if (item.url) {
-        window.open(item.url, '_blank')
-      }
-    }, 3000)
   }
 
   if (loading) {
@@ -96,28 +102,174 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black text-gray-300">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Hero Section */}
-        <div className="mt-12 mb-8 p-16 bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-800 rounded-xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-purple-500/10 pointer-events-none" />
-          <div className="relative z-10 text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl mb-8 text-3xl">
-              🔗
+      {/* Floating Money Animation */}
+      <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="money-floating"
+            style={{
+              top: `${Math.random() * 80 + 10}vh`,
+              left: `${Math.random() * 80 + 10}vw`,
+              animationDelay: `${i * 1}s`,
+              animationDuration: `${5 + Math.random() * 3}s`
+            }}
+          >
+            💸
+          </div>
+        ))}
+      </div>
+
+      {/* Amazing Hero Cover */}
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0">
+          {/* Gradient Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
+          
+          {/* Floating Money Bills Animation */}
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute animate-pulse opacity-10"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  animationDuration: `${3 + Math.random() * 2}s`
+                }}
+              >
+                <div className="text-green-400 text-4xl transform rotate-12">💵</div>
+              </div>
+            ))}
+            
+            {[...Array(8)].map((_, i) => (
+              <div
+                key={i + 12}
+                className="absolute animate-bounce opacity-5"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 4}s`,
+                  animationDuration: `${2 + Math.random() * 3}s`
+                }}
+              >
+                <div className="text-yellow-400 text-6xl transform -rotate-12">💰</div>
+              </div>
+            ))}
+          </div>
+          
+          {/* Grid Pattern Overlay */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+              backgroundSize: '50px 50px'
+            }} />
+          </div>
+          
+          {/* Animated Gradient Orbs */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-green-500/20 to-yellow-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
+        
+        {/* Hero Content */}
+        <div className="relative z-10 text-center px-6 max-w-7xl mx-auto">
+          {/* ASCII Art Money */}
+          <div className="mb-8 font-mono text-green-400 text-xs leading-none opacity-60 hidden md:block">
+            <pre className="whitespace-pre">
+{`███╗   ███╗ ██████╗ ███╗   ██╗███████╗██╗   ██╗
+████╗ ████║██╔═══██╗████╗  ██║██╔════╝╚██╗ ██╔╝
+██╔████╔██║██║   ██║██╔██╗ ██║█████╗   ╚████╔╝ 
+██║╚██╔╝██║██║   ██║██║╚██╗██║██╔══╝    ╚██╔╝  
+██║ ╚═╝ ██║╚██████╔╝██║ ╚████║███████╗   ██║   
+╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝`}
+            </pre>
+          </div>
+          
+          {/* Main Title */}
+          <div className="mb-12">
+            <div className="inline-flex items-center gap-4 mb-6">
+              <div className="w-2 h-20 bg-gradient-to-b from-green-400 to-yellow-400 rounded-full" />
+              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black bg-gradient-to-r from-green-400 via-yellow-400 to-green-400 bg-clip-text text-transparent tracking-tighter">
+                CASH
+              </h1>
+              <div className="w-2 h-20 bg-gradient-to-b from-yellow-400 to-green-400 rounded-full" />
             </div>
-            <h1 className="text-4xl md:text-6xl font-semibold text-white mb-6 tracking-tight font-mono">
-              exclusive referrals
-            </h1>
-            <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Curated collection of referral codes and links for various platforms and services.
-            </p>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 border border-gray-600 rounded-full text-sm text-gray-300 font-mono">
-              ⚡ Click to copy & redirect
+            
+            <div className="mb-6">
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight">
+                BACK REFERRALS
+              </h2>
+              <div className="h-1 w-48 bg-gradient-to-r from-green-400 to-yellow-400 mx-auto rounded-full" />
+            </div>
+          </div>
+          
+          {/* Subtitle */}
+          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
+            Turn every click into <span className="text-green-400 font-semibold">cold hard cash</span>. 
+            Premium referral codes that actually <span className="text-yellow-400 font-semibold">pay you back</span>.
+          </p>
+          
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-green-400 to-yellow-400 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+              <button 
+                onClick={() => {
+                  document.querySelector('.referrals-section')?.scrollIntoView({ 
+                    behavior: 'smooth' 
+                  })
+                }}
+                className="relative px-8 py-4 bg-black rounded-lg leading-none flex items-center gap-3 text-white font-semibold hover:scale-105 transition-transform duration-200"
+              >
+                <span className="text-2xl">💰</span>
+                <span>START EARNING NOW</span>
+                <span className="text-green-400">→</span>
+              </button>
+            </div>
+            
+            <div className="flex items-center gap-2 px-6 py-3 border border-gray-600 rounded-full text-sm text-gray-300 backdrop-blur-sm bg-black/30">
+              <span className="animate-pulse text-green-400">●</span>
+              <span className="font-mono">Click → Copy → Earn</span>
+            </div>
+          </div>
+          
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="text-4xl mb-2">🎯</div>
+              <div className="text-3xl font-bold text-white mb-1">{items.length}</div>
+              <div className="text-gray-400 font-mono text-sm">Premium Codes</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">📂</div>
+              <div className="text-3xl font-bold text-white mb-1">{availableTypes.length - 1}</div>
+              <div className="text-gray-400 font-mono text-sm">Categories</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-2">🔓</div>
+              <div className="text-3xl font-bold text-white mb-1">100%</div>
+              <div className="text-gray-400 font-mono text-sm">Free Access</div>
             </div>
           </div>
         </div>
+        
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="flex flex-col items-center text-gray-400">
+            <span className="text-sm font-mono mb-2">Scroll for codes</span>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div className="min-h-screen max-w-6xl mx-auto px-6 relative z-20 bg-black pt-16">
 
         {/* Filter Section */}
-        <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div className="referrals-section mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
           <p className="text-gray-400 text-center sm:text-left">
             Each card contains a referral code that gets copied to your clipboard when clicked.
           </p>
@@ -145,15 +297,27 @@ export default function HomePage() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {filteredItems.map((item, idx) => (
-            <a
-              key={`${item.name}-${idx}`}
-              href={item.url || '#'}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => handleClick(item, e, idx)}
-              className="group block bg-gray-900 border border-gray-800 rounded-xl overflow-hidden transition-all duration-200 hover:border-gray-600 hover:bg-gray-800 hover:-translate-y-1 relative"
-            >
+          {sortedItems.map((item, idx) => {
+            const isActive = selectedType === 'all' || item.type === selectedType
+            return (
+              <a
+                key={`${item.name}-${item.type}-${item.code}`}
+                href={item.url || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  if (!isActive) {
+                    e.preventDefault()
+                    return
+                  }
+                  handleClick(item, e, idx)
+                }}
+                className={`group block rounded-xl overflow-hidden transition-all duration-500 relative ${
+                  isActive 
+                    ? 'bg-gray-900 border border-gray-800 hover:border-gray-600 hover:bg-gray-800 hover:-translate-y-1 opacity-100 scale-100' 
+                    : 'bg-gray-950/50 border border-gray-900/50 opacity-40 scale-95 hover:opacity-60 hover:scale-100 cursor-not-allowed'
+                }`}
+              >
               {/* Loading Overlay */}
               {loadingIndex === idx && (
                 <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-10 rounded-xl">
@@ -167,8 +331,16 @@ export default function HomePage() {
               )}
 
               {/* Code Section */}
-              <div className="p-6 bg-black/50 border-b border-gray-800 min-h-[80px] flex items-center">
-                <span className="text-gray-400 text-sm font-mono leading-relaxed">
+              <div className={`p-6 border-b min-h-[80px] flex items-center ${
+                isActive 
+                  ? 'bg-black/50 border-gray-800' 
+                  : 'bg-black/20 border-gray-900'
+              }`}>
+                <span className={`text-sm font-mono leading-relaxed transition-colors ${
+                  isActive 
+                    ? 'text-gray-400' 
+                    : 'text-gray-600'
+                }`}>
                   {item.code || 'Direct link 🔗'}
                 </span>
               </div>
@@ -176,28 +348,32 @@ export default function HomePage() {
               {/* Name Section */}
               <div className="p-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-white text-lg font-medium group-hover:text-gray-200 transition-colors">
+                  <span className={`text-lg font-medium transition-colors ${
+                    isActive 
+                      ? 'text-white group-hover:text-gray-200' 
+                      : 'text-gray-500'
+                  }`}>
                     {item.name}
                   </span>
                   {item.type && (
-                    <span className="text-xs text-gray-500 bg-gray-800 px-2 py-1 rounded-md font-mono">
+                    <span className={`text-xs px-2 py-1 rounded-md font-mono ${
+                      isActive 
+                        ? 'text-gray-500 bg-gray-800' 
+                        : 'text-gray-600 bg-gray-900/50'
+                    }`}>
                       {item.type}
                     </span>
                   )}
                 </div>
               </div>
             </a>
-          ))}
+            )
+          })}
         </div>
 
-        {filteredItems.length === 0 && !loading && (
-          <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">No referrals found for the selected type.</p>
-          </div>
-        )}
 
         <Toaster 
-          position="bottom-right"
+          position="top-center"
           toastOptions={{
             style: {
               background: '#1f1f1f',
