@@ -3,15 +3,10 @@
   "version": "2.1.1",
   "private": true,
   "scripts": {
-    "clean": "rm -rf .next dist",
-    "prestart": "npm run clean",
-    "start": "next dev",
-    "prebuild": "npm run clean",
+    "dev": "next dev",
     "build": "next build",
-    "preexport": "npm run build",
-    "export": "next export -o dist",
-    "serve": "npm run export && serve dist",
-    "deploy": "npm run export && gh-pages --dotfiles -d dist -b gh-pages"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/babel-plugin": "11.13.5",
