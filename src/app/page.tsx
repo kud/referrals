@@ -1,6 +1,6 @@
 import { getReferrals, type ReferralItem } from "@/lib/referrals"
 import { ReferralsList } from "@/components/referrals-list"
-import { FloatingMoney, HeroAmbience } from "@/components/money-decorations"
+import { HeroAmbience } from "@/components/money-decorations"
 
 export const revalidate = 3600
 
@@ -51,16 +51,11 @@ export default async function HomePage() {
         }}
       />
       <div className="min-h-screen bg-black text-gray-300">
-        <FloatingMoney />
-
         <div className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start">
           <HeroAmbience />
 
           <div className="relative z-10 text-center px-6 max-w-7xl mx-auto">
-            <div
-              className="mb-8 font-mono text-green-400 text-xs leading-none hidden md:block"
-              style={{ animation: "gentleFade 4s ease-in-out infinite" }}
-            >
+            <div className="mb-6 font-mono text-green-500/25 text-xs leading-none hidden md:block">
               <pre className="whitespace-pre">
                 {`███╗   ███╗ ██████╗ ███╗   ██╗███████╗██╗   ██╗
 ████╗ ████║██╔═══██╗████╗  ██║██╔════╝╚██╗ ██╔╝
@@ -170,7 +165,7 @@ export default async function HomePage() {
 
         <div
           id="referrals"
-          className="min-h-screen max-w-6xl mx-auto px-6 relative z-20 bg-black pt-16 snap-start"
+          className="min-h-screen max-w-6xl mx-auto px-6 relative z-20 bg-black pt-10 pb-20 snap-start"
         >
           {error ? (
             <div className="text-center py-24">

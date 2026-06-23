@@ -82,10 +82,15 @@ export const ReferralsList = ({
   return (
     <>
       <div className="mb-8 space-y-4">
-        <p className="text-gray-400 text-center sm:text-left">
-          Tap a card — the code lands in your clipboard, then we whisk you to
-          the deal. 🪄
-        </p>
+        <div className="space-y-1">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+            Browse the codes
+          </h2>
+          <p className="text-gray-400 text-center sm:text-left">
+            Tap a card — the code lands in your clipboard, then we whisk you to
+            the deal. 🪄
+          </p>
+        </div>
 
         <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
           {availableTypes.map((type) => (
