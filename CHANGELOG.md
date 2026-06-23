@@ -4,6 +4,14 @@ All notable changes to this project are documented here.
 
 ---
 
+## 3.3.1 — 2026-06-23
+
+### Security
+
+- Upgraded Next.js from 15.5.9 to 15.5.18, resolving 93 open Dependabot alerts — a cluster of Next.js CVEs and their transitive dependency fan-out. No application behaviour changes; this is a security-only patch. ([47a9298](https://github.com/kud/referrals/commit/47a9298e868faf185ce830ce1379f1e52ed447ad))
+
+---
+
 ## 3.3.0 — 2026-06-23
 
 ### Highlights
