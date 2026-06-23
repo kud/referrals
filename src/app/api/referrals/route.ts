@@ -1,61 +1,14 @@
 import { NextResponse } from "next/server"
-import { Client } from "@notionhq/client"
+import { getReferrals } from "@/lib/referrals"
 
-const NOTION_API_KEY = process.env.NOTION_API_KEY
-const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID
-
-interface ReferralItem {
-  name: string | null
-  code: string | null
-  url: string | null
-  type: string | null
-}
-
-interface NotionProperty {
-  title?: Array<{ plain_text?: string }>
-  rich_text?: Array<{ plain_text?: string }>
-  url?: string
-  select?: { name?: string }
-}
-
-interface NotionPage {
-  properties: Record<string, NotionProperty>
-}
+export const revalidate = 3600
 
 export async function GET() {
-  if (!NOTION_API_KEY || !NOTION_DATABASE_ID) {
-    console.error("Missing Notion API key or database ID")
-    return NextResponse.json(
-      { error: "Server configuration error" },
-      { status: 500 },
-    )
+  const { items, error } = await getReferrals()
+
+  if (error) {
+    return NextResponse.json({ error }, { status: 500 })
   }
 
-  try {
-    const notion = new Client({ auth: NOTION_API_KEY })
-    const database = await notion.databases.query({
-      database_id: NOTION_DATABASE_ID,
-    })
-
-    const rawPages = database.results
-    const pagePromises = rawPages.map(async ({ id }) => {
-      const page = (await notion.pages.retrieve({ page_id: id })) as NotionPage
-
-      return {
-        name: page.properties.name?.title?.[0]?.plain_text || null,
-        code: page.properties.code?.rich_text?.[0]?.plain_text || null,
-        url: page.properties.url?.rich_text?.[0]?.plain_text || null,
-        type: page.properties.type?.select?.name || null,
-      }
-    })
-
-    const items: ReferralItem[] = await Promise.all(pagePromises)
-    return NextResponse.json({ items })
-  } catch (error) {
-    console.error("Error fetching data:", error)
-    return NextResponse.json(
-      { error: "Failed to fetch referrals" },
-      { status: 500 },
-    )
-  }
+  return NextResponse.json({ items })
 }

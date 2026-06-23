@@ -119,13 +119,41 @@
   body {
     @apply bg-background text-foreground;
   }
-  
-  * {
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewport='0 0 20 20'><text y='50%' x='50%' text-anchor='middle' dominant-baseline='central' font-size='16'>🤩</text></svg>") 10 10, auto;
+
+  html {
+    scroll-behavior: smooth;
   }
-  
-  button, button *, a, a *, .cursor-money, .cursor-money * {
-    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewport='0 0 20 20'><text y='50%' x='50%' text-anchor='middle' dominant-baseline='central' font-size='16'>🤑</text></svg>") 10 10, auto !important;
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  * {
+    cursor:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewport='0 0 20 20'><text y='50%' x='50%' text-anchor='middle' dominant-baseline='central' font-size='16'>🤩</text></svg>")
+        10 10,
+      auto;
+  }
+
+  button,
+  button *,
+  a,
+  a *,
+  .cursor-money,
+  .cursor-money * {
+    cursor:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewport='0 0 20 20'><text y='50%' x='50%' text-anchor='middle' dominant-baseline='central' font-size='16'>🤑</text></svg>")
+        10 10,
+      auto !important;
   }
 }
 
@@ -140,11 +168,11 @@
       transform: translateY(0);
     }
   }
-  
+
   .animate-fadeInUp {
     animation: fadeInUp 0.6s ease-out;
   }
-  
+
   @keyframes floatMoney {
     0% {
       opacity: 0;
@@ -167,24 +195,26 @@
       transform: translateY(0px) translateX(0px) rotate(360deg);
     }
   }
-  
+
   .money-floating {
     position: fixed;
     font-size: 1.5rem;
     pointer-events: none;
     z-index: 10;
+    will-change: transform, opacity;
     animation: floatMoney 6s ease-in-out infinite;
   }
-  
+
   @keyframes gentleFade {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.2;
     }
     50% {
       opacity: 1;
     }
   }
-  
+
   .animate-gentle-fade {
     animation: gentleFade 4s ease-in-out infinite;
   }
