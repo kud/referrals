@@ -122,11 +122,13 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
   }
 
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
+      scroll-snap-type: none;
     }
     *,
     *::before,
@@ -217,5 +219,47 @@
 
   .animate-gentle-fade {
     animation: gentleFade 4s ease-in-out infinite;
+  }
+
+  @keyframes coinBurst {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.6) rotate(0deg);
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-130px) scale(1.1) rotate(35deg);
+    }
+  }
+
+  .coin-burst {
+    position: absolute;
+    bottom: 28%;
+    font-size: 1.5rem;
+    will-change: transform, opacity;
+    animation: coinBurst 1s ease-out forwards;
+  }
+
+  .card-shine::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      120deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 70%
+    );
+    transform: translateX(-110%);
+    transition: transform 0.7s ease;
+  }
+
+  .card-shine:hover::before {
+    transform: translateX(110%);
   }
 }

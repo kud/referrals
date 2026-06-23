@@ -53,7 +53,7 @@ export default async function HomePage() {
       <div className="min-h-screen bg-black text-gray-300">
         <FloatingMoney />
 
-        <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start">
           <HeroAmbience />
 
           <div className="relative z-10 text-center px-6 max-w-7xl mx-auto">
@@ -170,12 +170,17 @@ export default async function HomePage() {
 
         <div
           id="referrals"
-          className="min-h-screen max-w-6xl mx-auto px-6 relative z-20 bg-black pt-16 scroll-mt-8"
+          className="min-h-screen max-w-6xl mx-auto px-6 relative z-20 bg-black pt-16 snap-start"
         >
           {error ? (
-            <div className="text-center text-gray-500 font-mono py-24">
-              Couldn&apos;t load referral codes right now — please try again
-              later.
+            <div className="text-center py-24">
+              <div className="text-6xl mb-4">🫠</div>
+              <p className="text-gray-400 font-mono">
+                Our money counter fell over.
+              </p>
+              <p className="text-gray-600 font-mono text-sm mt-1">
+                Give it a sec and refresh — the codes will be right back.
+              </p>
             </div>
           ) : (
             <ReferralsList items={items} availableTypes={availableTypes} />

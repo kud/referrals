@@ -2,19 +2,27 @@
 
 import { useMemo, useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { CoinBurst } from "@/components/coin-burst"
+import { categoryEmoji, categoryGradient } from "@/lib/categories"
 import type { ReferralItem } from "@/lib/referrals"
 
 const COUNTDOWN_SECONDS = 3
 
+const COPY_CHEERS = [
+  (name: string) => `Cha-ching! ${name} code copied 🤑`,
+  (name: string) => `${name} code yoinked to your clipboard 🪙`,
+  (name: string) => `Money move. ${name} code is yours 💸`,
+  (name: string) => `Paste it like it's hot — ${name} copied 🔥`,
+  (name: string) => `${name} code secured. Go get that bag 💰`,
+]
+
+const pickCheer = (name: string) =>
+  COPY_CHEERS[Math.floor(Math.random() * COPY_CHEERS.length)](name)
+
 const displayText = (type: string) =>
-  type === "all" ? "All" : type.charAt(0).toUpperCase() + type.slice(1)
+  type === "all"
+    ? "All"
+    : `${categoryEmoji(type)} ${type.charAt(0).toUpperCase() + type.slice(1)}`
 
 interface ReferralsListProps {
   items: ReferralItem[]
@@ -50,7 +58,7 @@ export const ReferralsList = ({
 
     if (item.code) {
       await navigator.clipboard.writeText(item.code)
-      toast.success(`Code for ${item.name} copied to clipboard! 🎉`)
+      toast.success(pickCheer(item.name || "That"))
     }
 
     setLoadingIndex(idx)
@@ -73,44 +81,39 @@ export const ReferralsList = ({
 
   return (
     <>
-      <div className="mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
+      <div className="mb-8 space-y-4">
         <p className="text-gray-400 text-center sm:text-left">
-          Each card contains a referral code that gets copied to your clipboard
-          when clicked.
+          Tap a card — the code lands in your clipboard, then we whisk you to
+          the deal. 🪄
         </p>
 
-        <div className="flex items-center gap-3">
-          <label
-            htmlFor="type-filter"
-            className="text-sm text-gray-400 font-mono"
-          >
-            Filter by type:
-          </label>
-          <Select value={selectedType} onValueChange={setSelectedType}>
-            <SelectTrigger
-              id="type-filter"
-              className="w-40 bg-gray-900 border-gray-700 text-white"
+        <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+          {availableTypes.map((type) => (
+            <button
+              key={type}
+              type="button"
+              onClick={() => setSelectedType(type)}
+              className={`px-4 py-2 rounded-full text-sm font-mono border transition-colors ${
+                selectedType === type
+                  ? "bg-green-400 text-black border-green-400"
+                  : "bg-gray-900 text-gray-300 border-gray-700 hover:border-gray-500 hover:text-white"
+              }`}
             >
-              <SelectValue>{displayText(selectedType)}</SelectValue>
-            </SelectTrigger>
-            <SelectContent className="bg-gray-900 border-gray-700">
-              {availableTypes.map((type) => (
-                <SelectItem
-                  key={type}
-                  value={type}
-                  className="text-white hover:bg-gray-800 focus:bg-gray-800"
-                >
-                  {displayText(type)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+              {displayText(type)}
+            </button>
+          ))}
         </div>
       </div>
 
       {sortedItems.length === 0 ? (
-        <div className="text-center text-gray-500 font-mono py-24">
-          No referral codes available right now — check back soon.
+        <div className="text-center py-24">
+          <div className="text-6xl mb-4">🕳️</div>
+          <p className="text-gray-400 font-mono">
+            The vault&apos;s empty for this filter.
+          </p>
+          <p className="text-gray-600 font-mono text-sm mt-1">
+            Try another category — the money printer never sleeps.
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
@@ -131,61 +134,67 @@ export const ReferralsList = ({
                   }
                   handleClick(item, e, idx)
                 }}
-                className={`group block rounded-xl overflow-hidden transition-all duration-500 relative ${
+                className={`card-shine group relative block aspect-[1.9/1] rounded-2xl overflow-hidden p-4 shadow-lg transition-transform duration-300 bg-gradient-to-br ${
                   isActive
-                    ? "bg-gray-900 border border-gray-800 hover:border-gray-600 hover:bg-gray-800 hover:-translate-y-1 opacity-100 scale-100"
-                    : "bg-gray-950/50 border border-gray-900/50 opacity-40 scale-95 hover:opacity-60 hover:scale-100 cursor-not-allowed"
+                    ? `${categoryGradient(item.type)} hover:-translate-y-1 hover:shadow-2xl`
+                    : "from-gray-800 to-gray-950 opacity-40 scale-95 hover:opacity-60 cursor-not-allowed"
                 }`}
               >
                 {loadingIndex === idx && (
-                  <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-10 rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-400"></div>
-                      <span className="text-gray-400 text-sm font-mono">
-                        Opening in {countdown}s…
+                  <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-20 rounded-2xl">
+                    <CoinBurst />
+                    <div className="flex items-center gap-3 relative z-10">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-400"></div>
+                      <span className="text-green-300 text-sm font-mono">
+                        Copied! Opening in {countdown}s…
                       </span>
                     </div>
                   </div>
                 )}
 
                 <div
-                  className={`p-6 border-b min-h-[80px] flex items-center ${
-                    isActive
-                      ? "bg-black/50 border-gray-800"
-                      : "bg-black/20 border-gray-900"
-                  }`}
-                >
-                  <span
-                    className={`text-sm font-mono leading-relaxed transition-colors ${
-                      isActive ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    {item.code || "Direct link 🔗"}
-                  </span>
-                </div>
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 pointer-events-none"
+                />
 
-                <div className="p-6">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`text-lg font-medium transition-colors ${
-                        isActive
-                          ? "text-white group-hover:text-gray-200"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      {item.name}
-                    </span>
-                    {item.type && (
-                      <span
-                        className={`text-xs px-2 py-1 rounded-md font-mono ${
-                          isActive
-                            ? "text-gray-500 bg-gray-800"
-                            : "text-gray-600 bg-gray-900/50"
-                        }`}
+                <div className="relative z-10 flex h-full flex-col justify-between text-white">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="h-6 w-8 rounded bg-gradient-to-br from-yellow-200 to-yellow-500 shadow-inner" />
+                      <svg
+                        aria-hidden
+                        viewBox="0 0 24 24"
+                        className="h-5 w-5 text-white/70"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
                       >
+                        <path d="M9 8a6 6 0 0 1 0 8" />
+                        <path d="M12.5 5.5a10 10 0 0 1 0 13" />
+                      </svg>
+                    </div>
+                    {item.type && (
+                      <span className="text-xs font-mono uppercase tracking-widest text-white/60">
                         {item.type}
                       </span>
                     )}
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="font-mono text-base tracking-[0.18em] text-white/90 break-all">
+                      {item.code || "DIRECT LINK"}
+                    </div>
+                    <div className="flex items-end justify-between gap-3">
+                      <div className="truncate text-base font-semibold uppercase tracking-wide">
+                        {item.name}
+                      </div>
+                      {isActive && (
+                        <span className="shrink-0 text-xs font-mono text-white/70 opacity-0 group-hover:opacity-100 transition-opacity">
+                          tap to pay 💳
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </a>
