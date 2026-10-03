@@ -8,7 +8,7 @@
 
 **Premium referral codes platform with animated money-themed UI**
 
-<a href="https://referrals.beansontoast.app">Website</a> · <a href="https://kud.io/projects/referrals/docs">Documentation</a>
+<a href="https://referrals.kud.io">Website</a> · <a href="https://kud.io/projects/referrals/docs">Documentation</a>
 
 </div>
 
