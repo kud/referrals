@@ -24,14 +24,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://referrals.kud.io"),
+  metadataBase: new URL("https://referrals.beansontoast.app"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Cash Back Referrals - Premium Referral Codes That Pay You Back",
     description: "Turn every click into cold hard cash with our curated collection of premium referral codes. Get cashback on finance, tech, travel, food, and more.",
-    url: "https://referrals.kud.io/",
+    url: "https://referrals.beansontoast.app/",
     siteName: "Cash Back Referrals",
     images: [
       {

@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/private/'],
       }
     ],
-    sitemap: 'https://referrals.kud.io/sitemap.xml',
+    sitemap: 'https://referrals.beansontoast.app/sitemap.xml',
   }
 }

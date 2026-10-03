@@ -10,7 +10,7 @@ const buildStructuredData = (items: ReferralItem[]) => ({
   name: "Cash Back Referrals",
   description:
     "Premium referral codes that pay you back. Get cashback on finance, tech, travel, food, and more.",
-  url: "https://referrals.kud.io",
+  url: "https://referrals.beansontoast.app",
   sameAs: ["https://github.com/kud", "https://twitter.com/_kud"],
   offers: {
     "@type": "AggregateOffer",
