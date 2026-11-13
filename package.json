@@ -2,6 +2,7 @@
   "name": "referrals",
   "version": "3.3.1",
   "description": "Premium referral codes platform with animated money-themed UI",
+  "license": "MIT",
   "private": true,
   "keywords": [
     "referrals",
