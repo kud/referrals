@@ -25,6 +25,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL("https://referrals.kud.io"),
+  icons: {
+    icon: { url: "/favicon.ico", sizes: "any" },
+    apple: "/apple-touch-icon.png",
+  },
   alternates: {
     canonical: "/",
   },
@@ -72,9 +76,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#000000" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
