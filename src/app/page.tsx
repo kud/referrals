@@ -1,7 +1,8 @@
 import Link from "next/link"
-import { CategoryChips, FilterProvider } from "@/components/filter"
+import { FilterProvider } from "@/components/filter"
 import { OfferBrowser } from "@/components/offer-browser"
 import { OfferCard } from "@/components/offer-card"
+import { FilterStatus, ShopScene } from "@/components/shop-scene"
 import { categoriesOf, getOffers, type Offer } from "@/lib/offers"
 import { formatDate, site } from "@/lib/site"
 
@@ -92,6 +93,7 @@ export default async function HomePage() {
 
         <FilterProvider categories={categoriesOf(sorted)}>
           <main>
+            <ShopScene />
             <section className="hero" aria-labelledby="headline">
               <h1 id="headline">{site.headline}</h1>
               <p className="intro">{site.intro}</p>
@@ -117,7 +119,7 @@ export default async function HomePage() {
                 </p>
               ) : (
                 <>
-                  <CategoryChips />
+                  <FilterStatus />
                   <OfferBrowser
                     items={sorted.map((offer) => ({
                       id: offer.id,

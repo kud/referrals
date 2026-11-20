@@ -1,9 +1,9 @@
 import { CopyCode } from "@/components/copy-code"
 import type { Offer } from "@/lib/offers"
-import { formatDate, site } from "@/lib/site"
+import { formatDate, formatShortDate, site } from "@/lib/site"
 
 export const OfferCard = ({ offer }: { offer: Offer }) => (
-  <article className="offer" aria-labelledby={`offer-${offer.id}-name`}>
+  <article className="offer tag" aria-labelledby={`offer-${offer.id}-name`}>
     <header className="offer-head">
       <h3 id={`offer-${offer.id}-name`} className="offer-brand">
         {offer.brand}
@@ -38,8 +38,9 @@ export const OfferCard = ({ offer }: { offer: Offer }) => (
           target="_blank"
           rel="sponsored noopener"
         >
-          Open {offer.brand} <span aria-hidden="true">↗</span>
-          <span className="visually-hidden"> (opens in a new tab)</span>
+          Open
+          <span className="visually-hidden"> {offer.brand}, in a new tab</span>{" "}
+          <span aria-hidden="true">↗</span>
         </a>
       )}
     </div>
@@ -48,7 +49,13 @@ export const OfferCard = ({ offer }: { offer: Offer }) => (
       <p className="offer-foot">
         {offer.checkedAt && (
           <span>
-            Checked <time dateTime={offer.checkedAt}>{formatDate(offer.checkedAt)}</time>
+            Checked{" "}
+            <time
+              dateTime={offer.checkedAt}
+              title={formatDate(offer.checkedAt)}
+            >
+              {formatShortDate(offer.checkedAt)}
+            </time>
           </span>
         )}
         {offer.termsUrl && (

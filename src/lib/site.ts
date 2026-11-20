@@ -28,6 +28,15 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 
 export const formatDate = (iso: string) => dateFormatter.format(new Date(iso))
 
+const shortDateFormatter = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "short",
+  timeZone: "UTC",
+})
+
+export const formatShortDate = (iso: string) =>
+  shortDateFormatter.format(new Date(iso))
+
 export const slugify = (value: string) =>
   value
     .toLowerCase()

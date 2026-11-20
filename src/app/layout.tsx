@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next"
-import { Inter, JetBrains_Mono, Newsreader } from "next/font/google"
+import { Inter, JetBrains_Mono, Newsreader, Silkscreen } from "next/font/google"
 import { site } from "@/lib/site"
 import "./globals.css"
 
@@ -19,6 +19,13 @@ const sans = Inter({
 const mono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+  display: "swap",
+})
+
+const pixel = Silkscreen({
+  variable: "--font-pixel",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 })
 
@@ -55,8 +62,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f2ea" },
-    { media: "(prefers-color-scheme: dark)", color: "#1f1c19" },
+    { media: "(prefers-color-scheme: light)", color: "#fbf6ea" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1612" },
   ],
 }
 
@@ -66,7 +73,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-GB"
-      className={`${serif.variable} ${sans.variable} ${mono.variable}`}
+      className={`${serif.variable} ${sans.variable} ${mono.variable} ${pixel.variable}`}
     >
       <body>{children}</body>
     </html>
