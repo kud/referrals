@@ -1,18 +1,12 @@
-import { MetadataRoute } from 'next'
- 
+import type { MetadataRoute } from "next"
+import { site } from "@/lib/site"
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://referrals.kud.io',
-      lastModified: new Date(),
-      changeFrequency: 'daily',
+      url: site.url,
+      changeFrequency: "weekly",
       priority: 1,
-    },
-    {
-      url: 'https://referrals.kud.io/api/referrals',
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.5,
     },
   ]
 }
