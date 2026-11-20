@@ -40,29 +40,21 @@ const structuredData = (offers: Offer[]) => ({
 })
 
 const steps = [
-  {
-    title: "Pick a service",
-    body: "Choose one you were going to try anyway. Each entry says what you get and what I get.",
-  },
-  {
-    title: "Copy the code or open the link",
-    body: "They are separate: copying never takes you anywhere, and the link opens the service in a new tab.",
-  },
-  {
-    title: "Sign up as usual",
-    body: "The service applies the bonus itself, usually after a first qualifying step. Its terms have the details.",
-  },
+  "Copy the code or open the link.",
+  "Sign up as you normally would.",
+  "Where the offer includes a bonus for you, we both get one.",
 ]
 
 const faq = [
   {
     question: "Do I pay more?",
     answer:
-      "No. The price is the same with or without a referral; the service pays the bonus from its own budget.",
+      "No. You pay exactly what you’d pay signing up directly, and some offers add a bonus for you on top.",
   },
   {
     question: "What do you get?",
-    answer: `Each offer lists it under “${site.owner.firstName} gets”: usually a small credit or cash bonus once your account qualifies.`,
+    answer:
+      "Usually a one-off credit or cash bonus once you’ve signed up. The service pays it, not you.",
   },
 ]
 
@@ -137,9 +129,8 @@ export default async function HomePage() {
             <h2 id="how-title">How it works</h2>
             <ol className="steps">
               {steps.map((step) => (
-                <li key={step.title}>
-                  <h3>{step.title}</h3>
-                  <p>{step.body}</p>
+                <li key={step}>
+                  <p>{step}</p>
                 </li>
               ))}
             </ol>

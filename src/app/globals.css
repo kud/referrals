@@ -365,19 +365,17 @@ a {
 
 .steps li::before {
   content: counter(step);
-  grid-row: span 2;
   font-family: var(--serif);
   font-size: 1.5rem;
   line-height: 1.1;
   color: var(--muted);
 }
 
-.steps h3 {
-  font-weight: 600;
-  font-size: 1rem;
+.steps p {
+  color: var(--ink);
+  padding-top: 0.25rem;
 }
 
-.steps p,
 .faq dd {
   color: var(--ink-soft);
 }
