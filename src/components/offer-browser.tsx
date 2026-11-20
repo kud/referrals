@@ -1,42 +1,24 @@
 "use client"
 
-import { useState, type ReactNode } from "react"
+import type { ReactNode } from "react"
+import { ALL, useFilter } from "@/components/filter"
 
 interface OfferBrowserProps {
-  categories: string[]
   items: Array<{ id: string; category: string; node: ReactNode }>
 }
 
-const ALL = "All"
-
-export const OfferBrowser = ({ categories, items }: OfferBrowserProps) => {
-  const [selected, setSelected] = useState(ALL)
+export const OfferBrowser = ({ items }: OfferBrowserProps) => {
+  const { selected } = useFilter()
   const visible =
     selected === ALL ? items : items.filter((item) => item.category === selected)
 
   return (
-    <>
-      <div className="filter" role="group" aria-label="Filter by category">
-        {[ALL, ...categories].map((category) => (
-          <button
-            key={category}
-            type="button"
-            className="chip"
-            aria-pressed={selected === category}
-            onClick={() => setSelected(category)}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
-      <ul className="offers" aria-label="Offers">
-        {visible.map((item) => (
-          <li key={item.id} id={item.id}>
-            {item.node}
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul className="offers" aria-label="Offers">
+      {visible.map((item) => (
+        <li key={item.id} id={item.id} data-category={item.category}>
+          {item.node}
+        </li>
+      ))}
+    </ul>
   )
 }

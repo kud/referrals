@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { CategoryChips, FilterProvider } from "@/components/filter"
 import { OfferBrowser } from "@/components/offer-browser"
 import { OfferCard } from "@/components/offer-card"
 import { categoriesOf, getOffers, type Offer } from "@/lib/offers"
@@ -89,65 +90,69 @@ export default async function HomePage() {
           </a>
         </header>
 
-        <main>
-          <section className="hero" aria-labelledby="headline">
-            <h1 id="headline">{site.headline}</h1>
-            <p className="intro">{site.intro}</p>
-            <aside className="disclosure" aria-label="Disclosure">
-              <p>{site.disclosure}</p>
-            </aside>
-            {source === "fixtures" && (
-              <p className="sample-note">
-                Preview with sample data: rewards are illustrative and codes are
-                placeholders.
-              </p>
-            )}
-          </section>
+        <FilterProvider categories={categoriesOf(sorted)}>
+          <main>
+            <section className="hero" aria-labelledby="headline">
+              <h1 id="headline">{site.headline}</h1>
+              <p className="intro">{site.intro}</p>
+              <aside className="disclosure" aria-label="Disclosure">
+                <p>{site.disclosure}</p>
+              </aside>
+              {source === "fixtures" && (
+                <p className="sample-note">
+                  Preview with sample data: rewards are illustrative and codes
+                  are placeholders.
+                </p>
+              )}
+            </section>
 
-          <section className="listing" aria-labelledby="offers-title">
-            <h2 id="offers-title" className="visually-hidden">
-              Offers
-            </h2>
-            {error ? (
-              <p className="empty">
-                The list could not be loaded just now. It usually comes back
-                within the hour.
-              </p>
-            ) : (
-              <OfferBrowser
-                categories={categoriesOf(sorted)}
-                items={sorted.map((offer) => ({
-                  id: offer.id,
-                  category: offer.category,
-                  node: <OfferCard offer={offer} />,
-                }))}
-              />
-            )}
-          </section>
+            <section className="listing" aria-labelledby="offers-title">
+              <h2 id="offers-title" className="visually-hidden">
+                Offers
+              </h2>
+              {error ? (
+                <p className="empty">
+                  The list could not be loaded just now. It usually comes back
+                  within the hour.
+                </p>
+              ) : (
+                <>
+                  <CategoryChips />
+                  <OfferBrowser
+                    items={sorted.map((offer) => ({
+                      id: offer.id,
+                      category: offer.category,
+                      node: <OfferCard offer={offer} />,
+                    }))}
+                  />
+                </>
+              )}
+            </section>
 
-          <section className="how" aria-labelledby="how-title">
-            <h2 id="how-title">How it works</h2>
-            <ol className="steps">
-              {steps.map((step) => (
-                <li key={step}>
-                  <p>{step}</p>
-                </li>
-              ))}
-            </ol>
-          </section>
+            <section className="how" aria-labelledby="how-title">
+              <h2 id="how-title">How it works</h2>
+              <ol className="steps">
+                {steps.map((step) => (
+                  <li key={step}>
+                    <p>{step}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
 
-          <section className="faq" aria-labelledby="faq-title">
-            <h2 id="faq-title">Questions</h2>
-            <dl>
-              {faq.map((item) => (
-                <div key={item.question}>
-                  <dt>{item.question}</dt>
-                  <dd>{item.answer}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-        </main>
+            <section className="faq" aria-labelledby="faq-title">
+              <h2 id="faq-title">Questions</h2>
+              <dl>
+                {faq.map((item) => (
+                  <div key={item.question}>
+                    <dt>{item.question}</dt>
+                    <dd>{item.answer}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          </main>
+        </FilterProvider>
 
         <footer className="site-footer">
           {lastChecked && (

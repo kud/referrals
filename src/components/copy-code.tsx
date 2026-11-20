@@ -26,7 +26,7 @@ export const CopyCode = ({ code, brand }: CopyCodeProps) => {
   }
 
   return (
-    <div className="code">
+    <div className="code" data-state={status}>
       <code className="code-value">{code}</code>
       <button
         type="button"
