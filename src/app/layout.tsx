@@ -1,24 +1,18 @@
 import type { Metadata, Viewport } from "next"
-import { Inter, JetBrains_Mono, Newsreader } from "next/font/google"
+import { Inter_Tight, Martian_Mono } from "next/font/google"
 import { site } from "@/lib/site"
 import "./globals.css"
 
-const serif = Newsreader({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  display: "swap",
-})
-
-const sans = Inter({
+const sans = Inter_Tight({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 })
 
-const mono = JetBrains_Mono({
+const mono = Martian_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+  axes: ["wdth"],
   display: "swap",
 })
 
@@ -55,8 +49,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f2ea" },
-    { media: "(prefers-color-scheme: dark)", color: "#1f1c19" },
+    { media: "(prefers-color-scheme: light)", color: "#f3f2ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#161616" },
   ],
 }
 
@@ -66,7 +60,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-GB"
-      className={`${serif.variable} ${sans.variable} ${mono.variable}`}
+      className={`${sans.variable} ${mono.variable}`}
     >
       <body>{children}</body>
     </html>
