@@ -1,7 +1,7 @@
 {
   "name": "referrals",
   "version": "3.3.1",
-  "description": "Premium referral codes platform with animated money-themed UI",
+  "description": "Referral links Erwann actually uses, read from Notion and rendered as a static Next.js site",
   "license": "MIT",
   "private": true,
   "keywords": [
@@ -17,7 +17,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run"
   },
   "dependencies": {
     "@notionhq/client": "4.0.2",
@@ -33,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   }
 }

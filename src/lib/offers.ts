@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { fixtureOffers } from "@/lib/fixtures"
 import { getNotionOffers } from "@/lib/notion"
 
@@ -14,22 +15,53 @@ export interface Offer {
   checkedAt: string | null
 }
 
+export type OffersSource = "fixtures" | "notion"
+
 export interface OffersResult {
   offers: Offer[]
-  source: "fixtures" | "notion"
+  source: OffersSource
   error: string | null
 }
 
-// Fixtures stay the default until the Notion database carries the reward,
-// country, terms and checked-date columns. Set REFERRALS_SOURCE=notion to switch.
-export const getOffers = async (): Promise<OffersResult> => {
-  if (process.env.REFERRALS_SOURCE === "notion") {
+// Production reads Notion; local and preview builds use the fixtures.
+// REFERRALS_SOURCE=notion|fixtures overrides either way.
+export const resolveSource = (
+  env: Record<string, string | undefined> = process.env,
+): OffersSource => {
+  if (
+    env.REFERRALS_SOURCE === "notion" ||
+    env.REFERRALS_SOURCE === "fixtures"
+  ) {
+    return env.REFERRALS_SOURCE
+  }
+  return env.VERCEL_ENV === "production" ? "notion" : "fixtures"
+}
+
+export const getOffers = cache(async (): Promise<OffersResult> => {
+  const source = resolveSource()
+
+  if (source === "notion") {
     const { offers, error } = await getNotionOffers()
-    return { offers, source: "notion", error }
+    return { offers, source, error }
   }
 
-  return { offers: fixtureOffers, source: "fixtures", error: null }
+  return { offers: fixtureOffers, source, error: null }
+})
+
+export const getOffer = async (id: string) => {
+  const { offers } = await getOffers()
+  return offers.find((offer) => offer.id === id) ?? null
 }
+
+export const sortOffers = (offers: Offer[]) =>
+  [...offers].sort((a, b) => a.brand.localeCompare(b.brand))
 
 export const categoriesOf = (offers: Offer[]) =>
   Array.from(new Set(offers.map((offer) => offer.category))).sort()
+
+export const latestCheck = (offers: Offer[]) =>
+  offers
+    .map((offer) => offer.checkedAt)
+    .filter((date): date is string => Boolean(date))
+    .sort()
+    .at(-1) ?? null
