@@ -1,9 +1,20 @@
-import Link from "next/link"
 import { CategoryChips, FilterProvider } from "@/components/filter"
 import { OfferBrowser } from "@/components/offer-browser"
 import { OfferCard } from "@/components/offer-card"
-import { categoriesOf, getOffers, type Offer } from "@/lib/offers"
-import { formatDate, site } from "@/lib/site"
+import {
+  Disclosure,
+  SiteFooter,
+  SiteHeader,
+  Steps,
+} from "@/components/site-chrome"
+import {
+  categoriesOf,
+  getOffers,
+  latestCheck,
+  sortOffers,
+  type Offer,
+} from "@/lib/offers"
+import { site } from "@/lib/site"
 
 export const revalidate = 3600
 
@@ -34,39 +45,15 @@ const structuredData = (offers: Offer[]) => ({
         "@type": "ListItem",
         position: index + 1,
         name: offer.brand,
-        url: `${site.url}/#${offer.id}`,
+        url: `${site.url}/${offer.id}`,
       })),
     },
   ],
 })
 
-const steps = [
-  "Copy the code or open the link.",
-  "Sign up as you normally would.",
-  "Where the offer includes a bonus for you, we both get one.",
-]
-
-const faq = [
-  {
-    question: "Do I pay more?",
-    answer:
-      "No. You pay exactly what you’d pay signing up directly, and some offers add a bonus for you on top.",
-  },
-  {
-    question: "What do you get?",
-    answer:
-      "Usually a one-off credit or cash bonus once you’ve signed up. The service pays it, not you.",
-  },
-]
-
 export default async function HomePage() {
   const { offers, source, error } = await getOffers()
-  const sorted = [...offers].sort((a, b) => a.brand.localeCompare(b.brand))
-  const lastChecked = offers
-    .map((offer) => offer.checkedAt)
-    .filter((date): date is string => Boolean(date))
-    .sort()
-    .at(-1)
+  const sorted = sortOffers(offers)
 
   return (
     <>
@@ -78,32 +65,14 @@ export default async function HomePage() {
       />
 
       <div className="page">
-        <header className="site-header">
-          <Link className="site-name" href="/">
-            {site.name}
-          </Link>
-          <a className="owner" href={site.owner.url}>
-            <span className="owner-initials" aria-hidden="true">
-              {site.owner.initials}
-            </span>
-            {site.owner.name}
-          </a>
-        </header>
+        <SiteHeader />
 
         <FilterProvider categories={categoriesOf(sorted)}>
           <main>
             <section className="hero" aria-labelledby="headline">
               <h1 id="headline">{site.headline}</h1>
               <p className="intro">{site.intro}</p>
-              <aside className="disclosure" aria-label="Disclosure">
-                <p>{site.disclosure}</p>
-              </aside>
-              {source === "fixtures" && (
-                <p className="sample-note">
-                  Preview with sample data: rewards are illustrative and codes
-                  are placeholders.
-                </p>
-              )}
+              <Disclosure source={source} />
             </section>
 
             <section className="listing" aria-labelledby="offers-title">
@@ -122,28 +91,19 @@ export default async function HomePage() {
                     items={sorted.map((offer) => ({
                       id: offer.id,
                       category: offer.category,
-                      node: <OfferCard offer={offer} />,
+                      node: <OfferCard offer={offer} linkToPage />,
                     }))}
                   />
                 </>
               )}
             </section>
 
-            <section className="how" aria-labelledby="how-title">
-              <h2 id="how-title">How it works</h2>
-              <ol className="steps">
-                {steps.map((step) => (
-                  <li key={step}>
-                    <p>{step}</p>
-                  </li>
-                ))}
-              </ol>
-            </section>
+            <Steps headingId="how-title" />
 
             <section className="faq" aria-labelledby="faq-title">
               <h2 id="faq-title">Questions</h2>
               <dl>
-                {faq.map((item) => (
+                {site.faq.map((item) => (
                   <div key={item.question}>
                     <dt>{item.question}</dt>
                     <dd>{item.answer}</dd>
@@ -154,19 +114,7 @@ export default async function HomePage() {
           </main>
         </FilterProvider>
 
-        <footer className="site-footer">
-          {lastChecked && (
-            <p>
-              Last updated{" "}
-              <time dateTime={lastChecked}>{formatDate(lastChecked)}</time>
-            </p>
-          )}
-          <p>
-            <a href={site.owner.url}>Contact</a>
-            {" · "}
-            <a href={site.source}>Source</a>
-          </p>
-        </footer>
+        <SiteFooter lastChecked={latestCheck(offers)} />
       </div>
     </>
   )

@@ -252,6 +252,16 @@ a {
   line-height: 1.2;
 }
 
+.offer-brand a {
+  text-decoration: none;
+}
+
+.offer-brand a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
 .offer-meta {
   margin-top: 0.125rem;
   font-size: 0.8125rem;
@@ -383,6 +393,39 @@ a {
     flex-direction: column;
     gap: 0;
   }
+}
+
+/* Offer page */
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding-top: 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: 0.375rem;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.hero-offer {
+  padding-top: 1.75rem;
+}
+
+.back-link {
+  margin-top: 2.5rem;
+  font-size: 0.9375rem;
 }
 
 /* How it works, FAQ */

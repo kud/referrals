@@ -17,6 +17,23 @@ export const site = {
     "These are the banks, apps and suppliers I pay for myself and would recommend without any bonus. If one suits you, signing up through my link usually gets us both something.",
   disclosure:
     "These are referral links: I get a reward when you use one, and it never costs you more.",
+  steps: [
+    "Copy the code or open the link.",
+    "Sign up as you normally would.",
+    "Where the offer includes a bonus for you, we both get one.",
+  ],
+  faq: [
+    {
+      question: "Do I pay more?",
+      answer:
+        "No. You pay exactly what you’d pay signing up directly, and some offers add a bonus for you on top.",
+    },
+    {
+      question: "What do you get?",
+      answer:
+        "Usually a one-off credit or cash bonus once you’ve signed up. The service pays it, not you.",
+    },
+  ],
 }
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -27,6 +44,14 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 })
 
 export const formatDate = (iso: string) => dateFormatter.format(new Date(iso))
+
+const monthFormatter = new Intl.DateTimeFormat("en-GB", {
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+})
+
+export const formatMonth = (iso: string) => monthFormatter.format(new Date(iso))
 
 export const slugify = (value: string) =>
   value

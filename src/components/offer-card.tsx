@@ -1,8 +1,20 @@
+import Link from "next/link"
 import { CopyCode } from "@/components/copy-code"
 import type { Offer } from "@/lib/offers"
 import { formatDate, site, slugify } from "@/lib/site"
 
-export const OfferCard = ({ offer }: { offer: Offer }) => (
+interface OfferCardProps {
+  offer: Offer
+  // On the home page the brand links to the offer's own page.
+  linkToPage?: boolean
+  headingLevel?: "h2" | "h3"
+}
+
+export const OfferCard = ({
+  offer,
+  linkToPage = false,
+  headingLevel: Heading = "h3",
+}: OfferCardProps) => (
   <article
     className="offer ticket"
     data-tint={slugify(offer.category)}
@@ -10,29 +22,35 @@ export const OfferCard = ({ offer }: { offer: Offer }) => (
   >
     <div className="ticket-main">
       <header className="offer-head">
-        <h3 id={`offer-${offer.id}-name`} className="offer-brand">
-          {offer.brand}
-        </h3>
+        <Heading id={`offer-${offer.id}-name`} className="offer-brand">
+          {linkToPage ? (
+            <Link href={`/${offer.id}`}>{offer.brand}</Link>
+          ) : (
+            offer.brand
+          )}
+        </Heading>
         <p className="offer-meta">
           <span className="offer-category">{offer.category}</span>
           {offer.country && <> · {offer.country}</>}
         </p>
       </header>
 
-      <dl className="offer-rewards">
-        {offer.youGet && (
-          <div>
-            <dt>You get</dt>
-            <dd>{offer.youGet}</dd>
-          </div>
-        )}
-        {offer.ownerGets && (
-          <div>
-            <dt>{site.owner.firstName} gets</dt>
-            <dd>{offer.ownerGets}</dd>
-          </div>
-        )}
-      </dl>
+      {(offer.youGet || offer.ownerGets) && (
+        <dl className="offer-rewards">
+          {offer.youGet && (
+            <div>
+              <dt>You get</dt>
+              <dd>{offer.youGet}</dd>
+            </div>
+          )}
+          {offer.ownerGets && (
+            <div>
+              <dt>{site.owner.firstName} gets</dt>
+              <dd>{offer.ownerGets}</dd>
+            </div>
+          )}
+        </dl>
+      )}
 
       {(offer.checkedAt || offer.termsUrl) && (
         <p className="offer-foot">

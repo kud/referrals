@@ -10,5 +10,14 @@ export async function GET() {
     return NextResponse.json({ error }, { status: 500 })
   }
 
-  return NextResponse.json({ offers })
+  return NextResponse.json({
+    // The original shape, kept for anything still reading it.
+    items: offers.map((offer) => ({
+      name: offer.brand,
+      code: offer.code,
+      url: offer.url,
+      type: offer.category,
+    })),
+    offers,
+  })
 }
