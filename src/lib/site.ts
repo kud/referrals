@@ -12,11 +12,11 @@ export const site = {
   title: "Erwann's referral codes: Boursorama, Revolut, Octopus…",
   description:
     "Referral links I actually use, for Boursorama, Revolut, Octopus Energy and more: what you get, what I get, and when each offer was last checked.",
-  headline: "Referral links I actually use",
+  headline: "Services I use, with my referral links",
   intro:
-    "Services I pay for and would recommend anyway. If you sign up through one, we both usually get a bonus.",
+    "These are the banks, apps and suppliers I pay for myself and would recommend without any bonus. If one suits you, signing up through my link usually gets us both something.",
   disclosure:
-    "These are referral links. I get a reward when you use them; it never costs you more.",
+    "These are referral links: I get a reward when you use one, and it never costs you more.",
 }
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {

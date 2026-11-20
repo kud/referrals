@@ -367,13 +367,10 @@ a {
   font-weight: 600;
 }
 
-.steps h3 {
-  font-weight: 600;
-  font-size: 0.9375rem;
-  margin-bottom: 0.25rem;
+.steps p {
+  color: var(--text);
 }
 
-.steps p,
 .faq dd {
   color: var(--text-soft);
   font-size: 0.875rem;
