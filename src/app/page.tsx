@@ -118,13 +118,19 @@ export default async function HomePage() {
               ) : (
                 <>
                   <CategoryChips />
-                  <OfferBrowser
-                    items={sorted.map((offer) => ({
-                      id: offer.id,
-                      category: offer.category,
-                      node: <OfferCard offer={offer} />,
-                    }))}
-                  />
+                  <div className="code-card">
+                    <div className="code-card-bar">
+                      <span className="code-card-name">~/.referrals</span>
+                      <span className="code-card-lang">TOML</span>
+                    </div>
+                    <OfferBrowser
+                      items={sorted.map((offer) => ({
+                        id: offer.id,
+                        category: offer.category,
+                        node: <OfferCard offer={offer} />,
+                      }))}
+                    />
+                  </div>
                 </>
               )}
             </section>
