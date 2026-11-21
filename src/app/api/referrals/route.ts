@@ -1,14 +1,23 @@
 import { NextResponse } from "next/server"
-import { getReferrals } from "@/lib/referrals"
+import { getOffers } from "@/lib/offers"
 
 export const revalidate = 3600
 
 export async function GET() {
-  const { items, error } = await getReferrals()
+  const { offers, error } = await getOffers()
 
   if (error) {
     return NextResponse.json({ error }, { status: 500 })
   }
 
-  return NextResponse.json({ items })
+  return NextResponse.json({
+    // The original shape, kept for anything still reading it.
+    items: offers.map((offer) => ({
+      name: offer.brand,
+      code: offer.code,
+      url: offer.url,
+      type: offer.category,
+    })),
+    offers,
+  })
 }
