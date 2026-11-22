@@ -2,11 +2,10 @@
 
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white)
 ![MIT](https://img.shields.io/badge/licence-MIT-22C55E?style=flat-square)
 
-**Premium referral codes platform with animated money-themed UI**
+**The referral links Erwann actually uses: what you get, what Erwann gets, and when each was last checked**
 
 <a href="https://referrals.kud.io">Website</a> · <a href="https://kud.io/projects/referrals/docs">Documentation</a>
 
@@ -14,12 +13,10 @@
 
 ## Features
 
-- **Payment-card tiles** — each referral is displayed as a premium card with a chip, contactless icon, and the code formatted as a card number, with muted per-category colour gradients.
-- **One-click copy and redirect** — clicking a card copies the code to the clipboard, triggers a celebratory toast and coin-burst animation, then redirects to the referral link after a 3-second countdown.
-- **Category pill filtering** — filter by finance, food, home, ride-hailing, tech, or travel using pill buttons; the grid reflows fluidly.
-- **Notion as a headless CMS** — referral data lives in a Notion database; adding or updating a code requires no code change or redeploy.
-- **Server-side ISR** — the homepage is a Next.js App Router Server Component with a 1-hour revalidation window, so pages load instantly with no client-side fetch.
-- **Money-themed UI** — floating bill animations, a coin-burst on copy, and a full-screen animated hero set the mood.
+- **Ticket layout**: each offer is a perforated ticket, in a grid of one column on phones, two from 1024px and three from 1600px; running text keeps a readable measure. What both sides get sits on the left; the code and its Copy button sit on the stub, apart from the sponsored link. Copying never redirects.
+- **Trust first**: a disclosure naming the owner above the first offer, a checked date and terms link on every offer, no countdowns or badges. Light and dark follow the system setting unless the header control pins one.
+- **A page per offer**: `/<slug>` is prerendered for each offer, with its own title, canonical URL, structured data (WebPage, Organization, BreadcrumbList) and an Open Graph image drawn with `next/og`. `sitemap.xml` lists every offer with its checked date.
+- **Notion as the store**: production reads the Notion database, following pagination so no row is dropped; pages revalidate hourly. Local and preview builds use sample fixtures unless `REFERRALS_SOURCE=notion` is set.
 
 ## Install
 
@@ -39,14 +36,23 @@ NOTION_DATABASE_ID=your_notion_database_id
 
 ### Notion database schema
 
-Create a Notion database with these properties:
+Only `name` is required; an offer renders without any of the optional columns.
 
-| Property | Type   | Description                 |
-| -------- | ------ | --------------------------- |
-| `name`   | Title  | Service or platform name    |
-| `code`   | Text   | Referral code               |
-| `url`    | URL    | Referral link               |
-| `type`   | Select | Category (finance, food, …) |
+| Property     | Type   | Required | Example                              |
+| ------------ | ------ | -------- | ------------------------------------ |
+| `name`       | Title  | yes      | Boursorama                           |
+| `type`       | Select | no       | finance (shown as Finance)           |
+| `code`       | Text   | no       | ERWANN123                            |
+| `url`        | URL    | no       | https://… (a Text column also works) |
+| `country`    | Select | no       | France                               |
+| `you_get`    | Text   | no       | €80 after your first card payment    |
+| `owner_gets` | Text   | no       | €80 once your account is open        |
+| `terms_url`  | URL    | no       | https://…                            |
+| `checked`    | Date   | no       | 12 Nov 2026                          |
+
+### Data source
+
+`VERCEL_ENV=production` reads Notion; everything else reads `src/lib/fixtures.ts`. Set `REFERRALS_SOURCE=notion` or `REFERRALS_SOURCE=fixtures` to force either.
 
 ## Usage
 
@@ -55,6 +61,7 @@ npm run dev    # development server with Turbopack
 npm run build  # production build
 npm run start  # start production server
 npm run lint   # lint
+npm test       # unit tests (vitest)
 ```
 
 Open [http://localhost:3000](http://localhost:3000).

@@ -1,7 +1,7 @@
 {
   "name": "referrals",
   "version": "3.3.1",
-  "description": "Premium referral codes platform with animated money-themed UI",
+  "description": "Referral links Erwann actually uses, read from Notion and rendered as a static Next.js site",
   "license": "MIT",
   "private": true,
   "keywords": [
@@ -17,19 +17,14 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run"
   },
   "dependencies": {
     "@notionhq/client": "4.0.2",
-    "@radix-ui/react-slot": "1.2.3",
-    "class-variance-authority": "0.7.1",
-    "clsx": "2.1.1",
-    "lucide-react": "0.541.0",
-    "next": "16.4.1",
+    "next": "16.4.6",
     "react": "19.1.1",
-    "react-dom": "19.1.1",
-    "react-hot-toast": "2.6.0",
-    "tailwind-merge": "3.3.1"
+    "react-dom": "19.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -37,9 +32,9 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.0",
+    "eslint-config-next": "16.4.6",
     "tailwindcss": "^4",
-    "tw-animate-css": "1.3.7",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
   }
 }
