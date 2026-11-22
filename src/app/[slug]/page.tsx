@@ -91,7 +91,7 @@ export default async function OfferPage({ params }: Params) {
             <Disclosure source={source} />
           </section>
 
-          <section aria-label={`${offer.brand} offer`}>
+          <section className="offer-single" aria-label={`${offer.brand} offer`}>
             <OfferCard offer={offer} headingLevel="h2" />
           </section>
 

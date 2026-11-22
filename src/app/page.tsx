@@ -1,4 +1,4 @@
-import { CategoryChips, FilterProvider } from "@/components/filter"
+import { CategoryChips, FilterProvider, OfferCount } from "@/components/filter"
 import { OfferBrowser } from "@/components/offer-browser"
 import { OfferCard } from "@/components/offer-card"
 import {
@@ -9,6 +9,7 @@ import {
 } from "@/components/site-chrome"
 import {
   categoriesOf,
+  countsByCategory,
   getOffers,
   latestCheck,
   sortOffers,
@@ -86,7 +87,10 @@ export default async function HomePage() {
                 </p>
               ) : (
                 <>
-                  <CategoryChips />
+                  <div className="listing-head">
+                    <CategoryChips />
+                    <OfferCount counts={countsByCategory(sorted)} />
+                  </div>
                   <OfferBrowser
                     items={sorted.map((offer) => ({
                       id: offer.id,
@@ -98,19 +102,21 @@ export default async function HomePage() {
               )}
             </section>
 
-            <Steps headingId="how-title" />
+            <div className="notes">
+              <Steps headingId="how-title" />
 
-            <section className="faq" aria-labelledby="faq-title">
-              <h2 id="faq-title">Questions</h2>
-              <dl>
-                {site.faq.map((item) => (
-                  <div key={item.question}>
-                    <dt>{item.question}</dt>
-                    <dd>{item.answer}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
+              <section className="faq" aria-labelledby="faq-title">
+                <h2 id="faq-title">Questions</h2>
+                <dl>
+                  {site.faq.map((item) => (
+                    <div key={item.question}>
+                      <dt>{item.question}</dt>
+                      <dd>{item.answer}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            </div>
           </main>
         </FilterProvider>
 
