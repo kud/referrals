@@ -46,6 +46,14 @@ const text = (property?: NotionProperty): string | null =>
   (property?.url?.trim() || null) ??
   (property?.select?.name?.trim() || null)
 
+// Notion types are typed by hand ("finance", "ride-hailing"); show them as
+// labels ("Finance", "Ride-hailing") so chips and tickets read consistently.
+export const categoryLabel = (value: string | null) => {
+  const trimmed = value?.trim()
+  if (!trimmed) return "Other"
+  return trimmed.charAt(0).toLocaleUpperCase("en-GB") + trimmed.slice(1)
+}
+
 const date = (property?: NotionProperty) =>
   property?.date?.start?.slice(0, 10) ?? null
 
@@ -57,7 +65,7 @@ export const toOffer = (page: NotionPage): Offer | null => {
   return {
     id: slugify(brand) || page.id,
     brand,
-    category: text(p.type) ?? "Other",
+    category: categoryLabel(text(p.type)),
     country: text(p.country),
     youGet: text(p.you_get),
     ownerGets: text(p.owner_gets),

@@ -53,3 +53,28 @@ export const CategoryChips = () => {
     </div>
   )
 }
+
+export const countLabel = (
+  counts: Record<string, number>,
+  selected: string,
+) => {
+  const total = Object.values(counts).reduce((sum, n) => sum + n, 0)
+  const offers = (n: number) => `${n} ${n === 1 ? "offer" : "offers"}`
+  if (selected === ALL) {
+    const categories = Object.keys(counts).length
+    const noun = categories === 1 ? "category" : "categories"
+    return `${offers(total)} in ${categories} ${noun}`
+  }
+  return `${counts[selected] ?? 0} of ${offers(total)}`
+}
+
+// Says how many offers the chips leave on screen; announced politely when
+// the filter changes.
+export const OfferCount = ({ counts }: { counts: Record<string, number> }) => {
+  const { selected } = useFilter()
+  return (
+    <p className="count" aria-live="polite">
+      {countLabel(counts, selected)}
+    </p>
+  )
+}

@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { CopyCode } from "@/components/copy-code"
 import type { Offer } from "@/lib/offers"
-import { formatDate, site, slugify } from "@/lib/site"
+import { formatDate, site } from "@/lib/site"
+import { tintFamily } from "@/lib/tints"
 
 interface OfferCardProps {
   offer: Offer
@@ -17,7 +18,7 @@ export const OfferCard = ({
 }: OfferCardProps) => (
   <article
     className="offer ticket"
-    data-tint={slugify(offer.category)}
+    data-tint={tintFamily(offer.category) ?? undefined}
     aria-labelledby={`offer-${offer.id}-name`}
   >
     <div className="ticket-main">

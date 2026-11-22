@@ -59,6 +59,12 @@ export const sortOffers = (offers: Offer[]) =>
 export const categoriesOf = (offers: Offer[]) =>
   Array.from(new Set(offers.map((offer) => offer.category))).sort()
 
+export const countsByCategory = (offers: Offer[]) =>
+  offers.reduce<Record<string, number>>((counts, offer) => {
+    counts[offer.category] = (counts[offer.category] ?? 0) + 1
+    return counts
+  }, {})
+
 export const latestCheck = (offers: Offer[]) =>
   offers
     .map((offer) => offer.checkedAt)
