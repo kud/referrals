@@ -13,8 +13,8 @@
 
 ## Features
 
-- **Ticket layout**: each offer is a perforated ticket. What both sides get sits on the left; the code and its Copy button sit on the stub, apart from the sponsored link. Copying never redirects.
-- **Trust first**: a disclosure above the first offer, the owner named, a checked date and terms link on every offer, no countdowns or badges. Light and dark follow the system setting.
+- **Ticket layout**: each offer is a perforated ticket, in a grid of one column on phones, two from 1024px and three from 1600px; running text keeps a readable measure. What both sides get sits on the left; the code and its Copy button sit on the stub, apart from the sponsored link. Copying never redirects.
+- **Trust first**: a disclosure naming the owner above the first offer, a checked date and terms link on every offer, no countdowns or badges. Light and dark follow the system setting unless the header control pins one.
 - **A page per offer**: `/<slug>` is prerendered for each offer, with its own title, canonical URL, structured data (WebPage, Organization, BreadcrumbList) and an Open Graph image drawn with `next/og`. `sitemap.xml` lists every offer with its checked date.
 - **Notion as the store**: production reads the Notion database, following pagination so no row is dropped; pages revalidate hourly. Local and preview builds use sample fixtures unless `REFERRALS_SOURCE=notion` is set.
 
@@ -41,7 +41,7 @@ Only `name` is required; an offer renders without any of the optional columns.
 | Property     | Type   | Required | Example                              |
 | ------------ | ------ | -------- | ------------------------------------ |
 | `name`       | Title  | yes      | Boursorama                           |
-| `type`       | Select | no       | Banking                              |
+| `type`       | Select | no       | finance (shown as Finance)           |
 | `code`       | Text   | no       | ERWANN123                            |
 | `url`        | URL    | no       | https://… (a Text column also works) |
 | `country`    | Select | no       | France                               |
