@@ -16,7 +16,7 @@ export const site = {
   intro:
     "These are the banks, apps and suppliers I pay for myself and would recommend without any bonus. If one suits you, signing up through my link usually gets us both something.",
   disclosure:
-    "These are referral links: I get a reward when you use one, and it never costs you more.",
+    "These are referral links from Erwann Mest: I get a reward when you use one, and it never costs you more.",
   steps: [
     "Copy the code or open the link.",
     "Sign up as you normally would.",

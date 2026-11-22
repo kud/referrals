@@ -1,24 +1,26 @@
 import Link from "next/link"
 import type { OffersSource } from "@/lib/offers"
+import { ThemeControl } from "@/components/theme-control"
 import { formatDate, site } from "@/lib/site"
 
+// The mark and title lead home; the theme control is the header's one tool.
+// The owner is named in the disclosure, next to what it discloses.
 export const SiteHeader = () => (
   <header className="site-header">
     <Link className="site-name" href="/">
+      <span className="site-mark" aria-hidden="true" />
       {site.name}
     </Link>
-    <a className="owner" href={site.owner.url}>
-      <span className="owner-initials" aria-hidden="true">
-        {site.owner.initials}
-      </span>
-      {site.owner.name}
-    </a>
+    <ThemeControl />
   </header>
 )
 
 export const Disclosure = ({ source }: { source: OffersSource }) => (
   <>
     <aside className="disclosure" aria-label="Disclosure">
+      <span className="owner-initials" aria-hidden="true">
+        {site.owner.initials}
+      </span>
       <p>{site.disclosure}</p>
     </aside>
     {source === "fixtures" && (

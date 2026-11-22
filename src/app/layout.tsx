@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Inter_Tight, Martian_Mono } from "next/font/google"
+import { themeScript } from "@/lib/theme"
 import { site } from "@/lib/site"
 import "./globals.css"
 
@@ -63,7 +64,11 @@ export default function RootLayout({
     <html
       lang="en-GB"
       className={`${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   )
