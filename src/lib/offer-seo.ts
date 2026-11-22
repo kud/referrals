@@ -67,3 +67,13 @@ export const offerStructuredData = (offer: Offer) => ({
     },
   ],
 })
+
+// Only promise a checked date when the row has one.
+export const offerIntro = (offer: Offer) => {
+  const checked = offer.checkedAt ? ", and when I last checked it" : ""
+  if (offer.youGet) {
+    const owner = offer.ownerGets ? ", what I get" : ""
+    return `What you get with my ${offer.brand} referral${owner}${checked}.`
+  }
+  return `My ${offer.brand} referral ${offer.code ? "code" : "link"}${checked}.`
+}

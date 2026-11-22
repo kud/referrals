@@ -10,6 +10,7 @@ import {
 } from "@/components/site-chrome"
 import {
   offerDescription,
+  offerIntro,
   offerStructuredData,
   offerTitle,
 } from "@/lib/offer-seo"
@@ -83,11 +84,7 @@ export default async function OfferPage({ params }: Params) {
 
           <section className="hero hero-offer" aria-labelledby="headline">
             <h1 id="headline">{offer.brand} referral code</h1>
-            <p className="intro">
-              {offer.youGet
-                ? `What you get with my ${offer.brand} referral, what I get, and when I last checked it.`
-                : `My ${offer.brand} referral ${offer.code ? "code" : "link"}, and when I last checked it.`}
-            </p>
+            <p className="intro">{offerIntro(offer)}</p>
             <Disclosure source={source} />
           </section>
 

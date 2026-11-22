@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { countLabel } from "@/components/filter"
 import { categoryLabel, toOffer } from "@/lib/notion"
+import { offerIntro } from "@/lib/offer-seo"
 import { countsByCategory, type Offer } from "@/lib/offers"
 import { talon, tintFamily } from "@/lib/tints"
 
@@ -57,5 +58,27 @@ describe("countLabel", () => {
   it("counts what a chip leaves on screen", () => {
     expect(countLabel(counts, "Finance")).toBe("2 of 3 offers")
     expect(countLabel(counts, "Tech")).toBe("1 of 3 offers")
+  })
+})
+
+describe("offerIntro", () => {
+  const bare = { brand: "Bolt", code: "ERW", checkedAt: null } as Offer
+
+  it("does not promise a checked date the row lacks", () => {
+    expect(offerIntro(bare)).toBe("My Bolt referral code.")
+    expect(offerIntro({ ...bare, code: null })).toBe("My Bolt referral link.")
+  })
+
+  it("mentions what each side gets and the check when present", () => {
+    expect(
+      offerIntro({
+        ...bare,
+        youGet: "€5",
+        ownerGets: "€5",
+        checkedAt: "2026-11-12",
+      }),
+    ).toBe(
+      "What you get with my Bolt referral, what I get, and when I last checked it.",
+    )
   })
 })
